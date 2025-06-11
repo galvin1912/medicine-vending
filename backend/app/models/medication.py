@@ -21,30 +21,14 @@ class Medication(Base):
     contraindications = Column(Text)  # Chống chỉ định
     allergy_tags = Column(ARRAY(Text))  # Các thành phần có thể gây dị ứng
 
-    # Relationships
-    symptoms = relationship("MedicationSymptom", back_populates="medication")
+    symptoms = relationship(
+        "Symptom", 
+        secondary="medication_symptom", 
+        back_populates="medications"
+    )
+    
     prescription_doses = relationship("PrescriptionDose", back_populates="medication")
     prescription_supportings = relationship("PrescriptionSupporting", back_populates="medication")
 
-
-class Symptom(Base):
-    """Symptom model."""
-    __tablename__ = "symptoms"
-
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(Text, nullable=False, unique=True)
-
-    # Relationships
-    medications = relationship("MedicationSymptom", back_populates="symptom")
-
-
-class MedicationSymptom(Base):
-    """Many-to-many relationship between medications and symptoms."""
-    __tablename__ = "medication_symptom"
-
-    medication_id = Column(Integer, ForeignKey("medications.id"), primary_key=True)
-    symptom_id = Column(Integer, ForeignKey("symptoms.id"), primary_key=True)
-
-    # Relationships
-    medication = relationship("Medication", back_populates="symptoms")
-    symptom = relationship("Symptom", back_populates="medications")
+    def __repr__(self):
+        return f"<Medication(id={self.id}, name='{self.name}', stock={self.stock})>"

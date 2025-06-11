@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, ForeignKey, TIMESTAMP, Text
+from sqlalchemy import Column, Integer, ForeignKey, TIMESTAMP, Text, String
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from app.database.connection import Base
@@ -14,6 +14,10 @@ class Prescription(Base):
     doses_per_day = Column(Integer, nullable=False)
     days = Column(Integer, nullable=False)
     total_price = Column(Integer, nullable=False)  # Total price in VND
+    status = Column(String, default='active')
+    diagnosis = Column(Text)
+    ai_recommendation = Column(Text)
+    pharmacist_notes = Column(Text)
 
     # Relationships
     patient = relationship("Patient", back_populates="prescriptions")
@@ -30,6 +34,8 @@ class PrescriptionDose(Base):
     prescription_id = Column(Integer, ForeignKey("prescriptions.id"), nullable=False)
     medication_id = Column(Integer, ForeignKey("medications.id"), nullable=False)
     quantity_per_dose = Column(Integer, nullable=False)
+    dose_time = Column(String, nullable=False)
+    special_instructions = Column(Text)
 
     # Relationships
     prescription = relationship("Prescription", back_populates="doses")
@@ -44,6 +50,7 @@ class PrescriptionSupporting(Base):
     prescription_id = Column(Integer, ForeignKey("prescriptions.id"), nullable=False)
     medication_id = Column(Integer, ForeignKey("medications.id"), nullable=False)
     quantity_total = Column(Integer, nullable=False)
+    usage_instructions = Column(Text)
 
     # Relationships
     prescription = relationship("Prescription", back_populates="supportings")
@@ -57,7 +64,9 @@ class UsageLog(Base):
     id = Column(Integer, primary_key=True, index=True)
     prescription_id = Column(Integer, ForeignKey("prescriptions.id"), nullable=False)
     note = Column(Text)
-    generated_by = Column(Text)
+    generated_by = Column(Text, nullable=False)
+    log_type = Column(String, default='info')
+    created_at = Column(TIMESTAMP, server_default=func.now(), nullable=False)
 
     # Relationships
     prescription = relationship("Prescription", back_populates="usage_logs")

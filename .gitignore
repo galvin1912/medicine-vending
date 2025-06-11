@@ -350,6 +350,16 @@ test_results/
 docs/_build/
 docs/build/
 
+# Vector stores and ML model data
+backend/data/vector_stores/
+*.pkl
+*.faiss
+*.index
+
+# HuggingFace cache
+.cache/huggingface/
+.cache/torch/
+
 # Miscellaneous
 .env.example.local
 *.orig
