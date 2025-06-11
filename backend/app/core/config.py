@@ -21,7 +21,6 @@ class Settings(BaseSettings):
     
     # AI/LLM Configuration
     gemini_api_key: str = Field(default="", env="GEMINI_API_KEY")
-    openai_api_key: Optional[str] = Field(default=None, env="OPENAI_API_KEY")
     
     # FastAPI Configuration
     secret_key: str = Field(

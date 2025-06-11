@@ -30,7 +30,6 @@ Create a `.env` file with:
 ```
 DATABASE_URL=postgresql://user:password@localhost/medicine_vending_db
 GEMINI_API_KEY=your_gemini_key
-OPENAI_API_KEY=your_openai_key
 SECRET_KEY=your_secret_key
 ```
 
