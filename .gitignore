@@ -1,12 +1,7 @@
 # Environment files - NEVER commit these!
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-.env.prod
-.env.docker
-*.env
+*.env.*
+!.env.example
+!.env.prod.example
 
 # Python
 __pycache__/
