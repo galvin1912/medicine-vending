@@ -36,7 +36,13 @@ class AIAnalysisResponse(BaseModel):
     doses_per_day: int
     total_days: int
     recommendation_reasoning: str
-    disclaimer: str = "Lưu ý: Đây chỉ là lời khuyên từ hệ thống AI, không thay thế được tư vấn và chẩn đoán từ bác sĩ."
+    diagnosis: str
+    severity_level: str
+    side_effects_warning: str
+    medical_advice: str
+    emergency_status: bool
+    should_see_doctor: bool
+    disclaimer: str
 
 
 class PrescriptionItem(BaseModel):
@@ -50,7 +56,7 @@ class ConfirmPrescriptionResponse(BaseModel):
     """Prescription confirmation response schema as per PRD."""
     prescription_id: int
     total_price: int  # in VND
-    diagnosis_summary: str
+    diagnosis: str
     usage_instructions: str
     side_effects_warning: str
     medical_advice: str

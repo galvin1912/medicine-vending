@@ -1,35 +1,37 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from 'react';
+import useVendingStore from './store/vendingStore';
+import PatientInfoForm from './components/PatientInfoForm';
+import VoiceInput from './components/VoiceInput';
+import RecommendationView from './components/RecommendationView';
+import PrescriptionView from './components/PrescriptionView';
+import ReceiptView from './components/ReceiptView';
+import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const { currentStep } = useVendingStore();
+
+  const renderCurrentStep = () => {
+    switch (currentStep) {
+      case 'patient-info':
+        return <PatientInfoForm />;
+      case 'voice-input':
+        return <VoiceInput />;
+      case 'recommendation':
+        return <RecommendationView />;
+      case 'prescription':
+        return <PrescriptionView />;
+      case 'receipt':
+        return <ReceiptView />;
+      default:
+        return <PatientInfoForm />;
+    }
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="App">
+      {renderCurrentStep()}
+    </div>
+  );
 }
 
-export default App
+export default App;

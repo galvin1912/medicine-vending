@@ -9,7 +9,7 @@ from pathlib import Path
 
 from langchain_core.documents import Document
 from langchain_community.vectorstores import FAISS
-from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings
 
 from app.models.medication import Medication
 from app.models.symptom import Symptom
@@ -362,7 +362,7 @@ class MedicalVectorStore:
         
         for med in relevant_meds:
             context_parts.append(
-                f"• {med['name']} ({med['active_ingredient']}) - "
+                f"• {med['name']} - "
                 f"{med['treatment_class']} - "
                 f"Độ liên quan: {med['relevance_score']:.2f}"
             )

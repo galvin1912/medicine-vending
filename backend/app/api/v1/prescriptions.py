@@ -15,12 +15,18 @@ router = APIRouter()
 class ConfirmPrescriptionRequest(BaseModel):
     """Request schema for confirming prescription."""
     patient_data: PatientCreate
-    main_medicines: List[dict]  # [{"name": str, "quantity_per_dose": int}]
-    supporting_medicines: List[dict]  # [{"name": str, "quantity_total": int}]
+    main_medicines: List[dict]
+    supporting_medicines: List[dict]
     doses_per_day: int
     total_days: int
     diagnosis: str = ""
     ai_recommendation: str = ""
+    severity_level: str = ""
+    side_effects_warning: str = ""
+    medical_advice: str = ""
+    emergency_status: bool = False
+    should_see_doctor: bool = False
+    disclaimer: str = ""
 
 
 @router.post("/prescriptions")
@@ -86,9 +92,16 @@ async def confirm_prescription(
         # Process main medicines
         main_medicine_total_quantities = []
         for med_info in request.main_medicines:
+            # First try exact match
             medication = db.query(Medication).filter(
                 Medication.name == med_info["name"]
             ).first()
+            
+            if not medication and "(" in med_info["name"] and ")" in med_info["name"]:
+                clean_name = med_info["name"].split("(")[0].strip()
+                medication = db.query(Medication).filter(
+                    Medication.name == clean_name
+                ).first()
             
             if not medication:
                 raise HTTPException(
@@ -125,9 +138,17 @@ async def confirm_prescription(
         # Process supporting medicines
         supporting_medicine_data = []
         for med_info in request.supporting_medicines:
+            # First try exact match
             medication = db.query(Medication).filter(
                 Medication.name == med_info["name"]
             ).first()
+            
+            # If not found, try to extract medication name (remove active ingredient part)
+            if not medication and "(" in med_info["name"] and ")" in med_info["name"]:
+                clean_name = med_info["name"].split("(")[0].strip()
+                medication = db.query(Medication).filter(
+                    Medication.name == clean_name
+                ).first()
             
             if not medication:
                 raise HTTPException(
@@ -202,15 +223,15 @@ async def confirm_prescription(
         response = ConfirmPrescriptionResponse(
             prescription_id=prescription.id,
             total_price=total_price,
-            diagnosis_summary=request.diagnosis or "Chẩn đoán dựa trên triệu chứng được phân tích.",
+            diagnosis=request.diagnosis or "Chẩn đoán dựa trên triệu chứng được phân tích.",
             usage_instructions=f"Uống thuốc {request.doses_per_day} lần mỗi ngày trong {request.total_days} ngày. Uống sau ăn và uống nhiều nước.",
-            side_effects_warning="Có thể gây buồn ngủ, khô miệng. Tránh lái xe sau khi dùng thuốc.",
-            medical_advice=f"Theo dõi tình trạng ít nhất {request.total_days} ngày. Nếu không thuyên giảm, nên gặp bác sĩ.",
+            side_effects_warning=request.side_effects_warning,
+            medical_advice=request.medical_advice,
             recommendation_reasoning=request.ai_recommendation or "Thuốc được lựa chọn dựa trên phân tích triệu chứng và thông tin bệnh nhân.",
-            severity_level="mild",
-            emergency_status=False,
-            should_see_doctor=True,
-            disclaimer="Lưu ý: Đây chỉ là lời khuyên từ hệ thống AI, không thay thế được tư vấn và chẩn đoán từ bác sĩ.",
+            severity_level=request.severity_level,
+            emergency_status=request.emergency_status,
+            should_see_doctor=request.should_see_doctor,
+            disclaimer=request.disclaimer,
             items=prescription_items
         )
         
