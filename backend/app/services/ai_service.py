@@ -22,13 +22,9 @@ class AIRecommendationOutput(BaseModel):
     """Pydantic model for structured AI output parsing."""
     main_medicines: List[Dict[str, Any]] = Field(
         description="List of main medicine recommendations with name, quantity_per_dose, and reason fields",
-        min_length=3,
-        max_length=10
     )
     supporting_medicines: List[Dict[str, Any]] = Field(
         description="List of supporting medicine recommendations with name, quantity_per_day (or quantity), and reason fields",
-        min_length=1,
-        max_length=5
     )
     doses_per_day: int = Field(description="Number of doses per day", ge=1, le=4)
     total_days: int = Field(description="Total days of treatment", ge=1, le=5)

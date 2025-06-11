@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { CheckCircle, Printer, RotateCcw, Download, Clock, User } from 'lucide-react';
 import useVendingStore from '../store/vendingStore';
+import { useScrollToTopOnMount } from '../hook/useScrollToTop';
 
 const ReceiptView = () => {
   const { prescription, patientData, resetAll } = useVendingStore();
   const [showPrintOptions, setShowPrintOptions] = useState(false);
+
+  useScrollToTopOnMount();
 
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('vi-VN', {
