@@ -1,3 +1,41 @@
+# AI Medicine Vending Machine - Backend
+
+## Quick Start
+
+### Prerequisites ✅
+- Python 3.12.3 (installed)
+- pip 24.0 (installed)
+- Virtual environment (created)
+- All dependencies (installed)
+
+### Activate Environment & Run
+```bash
+# Activate virtual environment
+source venv/bin/activate
+
+# Or use the convenience script
+./activate_venv.sh
+
+# Start development server
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+```
+
+### Test Setup
+```bash
+python test_setup.py
+```
+
+### Environment Variables
+Create a `.env` file with:
+```
+DATABASE_URL=postgresql://user:password@localhost/medicine_vending_db
+GEMINI_API_KEY=your_gemini_key
+OPENAI_API_KEY=your_openai_key
+SECRET_KEY=your_secret_key
+```
+
+---
+
 # Backend folder structure
 app/
 ├── __init__.py              # Makes app a Python package
