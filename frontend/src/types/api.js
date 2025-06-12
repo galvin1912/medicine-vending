@@ -1,4 +1,4 @@
-// API Request/Response Types based on PRD specifications
+// API Request/Response Types
 
 // POST /analyze_input request
 export const createAnalyzeInputRequest = (data) => ({

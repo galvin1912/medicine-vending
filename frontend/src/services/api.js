@@ -15,7 +15,7 @@ const apiClient = axios.create({
   },
 });
 
-// API Services matching PRD specifications exactly
+// API Services
 
 /**
  * POST /analyze_input

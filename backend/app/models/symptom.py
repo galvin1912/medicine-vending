@@ -16,7 +16,7 @@ medication_symptom = Table(
 
 
 class Symptom(Base):
-    """Symptom model as per PRD specification."""
+    """Symptom model"""
     __tablename__ = "symptoms"
 
     id = Column(Integer, primary_key=True, index=True)

@@ -95,7 +95,7 @@ class AIService:
             print("Warning: GEMINI_API_KEY not provided. AI features will be disabled.")
     
     def _get_prompt_template(self) -> str:
-        """Get the prompt template as specified in PRD."""
+        """Get the prompt template."""
         return """Dựa trên các thông tin dưới đây, hãy chẩn đoán bệnh sơ bộ, đánh giá mức độ nghiêm trọng, đưa ra lời khuyên y tế sơ bộ và xác định các mục tiêu điều trị phù hợp.
 
         Thông tin người bệnh:

@@ -30,7 +30,7 @@ class PatientAnalysisRequest(BaseModel):
 
 
 class AIAnalysisResponse(BaseModel):
-    """AI analysis response schema as per PRD."""
+    """AI analysis response schema."""
     main_medicines: List[MedicineRecommendation]
     supporting_medicines: List[SupportingMedicine]
     doses_per_day: int
@@ -53,7 +53,7 @@ class PrescriptionItem(BaseModel):
 
 
 class ConfirmPrescriptionResponse(BaseModel):
-    """Prescription confirmation response schema as per PRD."""
+    """Prescription confirmation response schema."""
     prescription_id: int
     total_price: int  # in VND
     diagnosis: str
