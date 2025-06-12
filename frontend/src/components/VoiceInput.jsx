@@ -21,9 +21,10 @@ const VoiceInput = () => {
     current_medications: ''
   });
   const [errorMessage, setErrorMessage] = useState('');
+  const [recognitionInstance, setRecognitionInstance] = useState(null);
 
-  const { speak, cancel, speaking } = useSpeechSynthesis();
-  const { listen, listening, stop } = useSpeechRecognition({
+  const { cancel, speaking } = useSpeechSynthesis();
+  const { listening, stop } = useSpeechRecognition({
     onResult: (result) => {
       setTranscribedText(result);
       setVoicePrompts(prev => ({
@@ -32,6 +33,45 @@ const VoiceInput = () => {
       }));
     },
   });
+
+  // Custom listen function with Vietnamese language support
+  const listenInVietnamese = () => {
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const recognition = new SpeechRecognition();
+      
+      recognition.lang = 'vi-VN'; // Set Vietnamese language
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+
+      recognition.onresult = (event) => {
+        const result = event.results[0][0].transcript;
+        setTranscribedText(result);
+        setVoicePrompts(prev => ({
+          ...prev,
+          [currentSection]: result
+        }));
+        setIsRecording(false);
+      };
+
+      recognition.onerror = (event) => {
+        console.error('Speech recognition error:', event.error);
+        setErrorMessage('Lỗi nhận diện giọng nói. Vui lòng thử lại.');
+        setIsRecording(false);
+      };
+
+      recognition.onend = () => {
+        setIsRecording(false);
+      };
+
+      recognition.start();
+      return recognition;
+    } else {
+      setErrorMessage('Trình duyệt không hỗ trợ nhận diện giọng nói.');
+      return null;
+    }
+  };
 
   // Voice prompts for each section
   const sectionPrompts = {
@@ -50,14 +90,19 @@ const VoiceInput = () => {
 
   const handleStartListening = () => {
     setIsRecording(true);
-    speak({ text: sectionPrompts[currentSection] });
+    setErrorMessage('');
     setTimeout(() => {
-      listen();
+      const recognition = listenInVietnamese();
+      setRecognitionInstance(recognition);
     }, 3000);
   };
 
   const handleStopListening = () => {
     setIsRecording(false);
+    if (recognitionInstance) {
+      recognitionInstance.stop();
+      setRecognitionInstance(null);
+    }
     stop();
     cancel();
   };
