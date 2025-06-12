@@ -119,7 +119,7 @@ class AIService:
         - Số ngày điều trị: 1-5 ngày cho triệu chứng nhẹ
 
         Trả lời theo CHÍNH XÁC định dạng JSON sau với các field bắt buộc:
-        - main_medicines: array của 3-10 object KHÔNG TRÙNG TÊN với fields "name" (string), "quantity_per_dose" (integer, CHỈ SỐ không có đơn vị), "reason" (string)
+        - main_medicines: array của 2-10 object KHÔNG TRÙNG TÊN với fields "name" (string), "quantity_per_dose" (integer, CHỈ SỐ không có đơn vị), "reason" (string)
         - supporting_medicines: array của 1-5 object KHÔNG TRÙNG TÊN với fields "name" (string), "quantity_per_day" (integer, CHỈ SỐ không có đơn vị), "reason" (string)
         - doses_per_day: integer từ 1-4
         - total_days: integer từ 1-5
@@ -134,7 +134,7 @@ class AIService:
 
         QUAN TRỌNG: 
         - Tất cả quantity_per_dose và quantity_per_day phải là số nguyên (ví dụ: 1, 2, 3) KHÔNG phải chuỗi có đơn vị (ví dụ: "1 viên", "2 gói")
-        - main_medicines phải có từ 3-10 loại thuốc khác nhau (không trùng tên)
+        - main_medicines phải có từ 2-10 loại thuốc khác nhau (không trùng tên)
         - supporting_medicines phải có từ 1-5 loại thuốc khác nhau (không trùng tên)
         - Không được trùng lặp tên thuốc trong cùng một danh sách
 

@@ -18,9 +18,7 @@ from app.models.symptom import Symptom
 class MedicalVectorStore:
     """Vector store for medical knowledge using FAISS and SentenceTransformers."""
     
-    def __init__(self, 
-                 embedding_model_name: str = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
-                 vector_store_path: str = "data/vector_stores"):
+    def __init__(self, embedding_model_name: str = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2", vector_store_path: str = "data/vector_stores"):
         """
         Initialize the medical vector store.
         
