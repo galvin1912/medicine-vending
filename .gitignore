@@ -324,6 +324,7 @@ keys/
 # Database dumps
 *.dump
 *.sql
+!backend/init.sql
 
 # Nginx logs
 nginx/logs/
